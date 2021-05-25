@@ -1,0 +1,115 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:elevation="5dp">
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+       <ImageView
+           android:id="@+id/chuck_image"
+           android:layout_width="100dp"
+           android:layout_height="100dp"
+           android:layout_margin="8dp"
+           app:layout_constraintVertical_bias="0"
+           app:layout_constraintHorizontal_bias="0"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintBottom_toBottomOf="parent"/>
+
+       <TextView
+           android:id="@+id/category"
+           android:layout_margin="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Cat:"
+           android:textSize="13sp"
+           android:textStyle="bold"
+           app:layout_constraintHorizontal_bias="1.0"
+           app:layout_constraintVertical_bias="0.0"
+           app:layout_constraintStart_toEndOf="@+id/chuck_image"
+           app:layout_constraintEnd_toStartOf="@+id/text_category"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
+       <TextView
+           android:id="@+id/text_category"
+           android:layout_margin="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="example category:"
+           android:textSize="13sp"
+           android:textStyle="bold"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
+       <TextView
+           android:id="@+id/text_created_time"
+           android:layout_margin="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="13sp"
+           android:textStyle="bold"
+           android:text="Created At"
+           app:layout_constraintTop_toBottomOf="@+id/chuck_image"
+           app:layout_constraintStart_toStartOf="parent" />
+
+       <TextView
+           android:id="@+id/text_created_at"
+           android:layout_margin="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="13sp"
+           android:textStyle="bold"
+           android:text="Time here"
+           app:layout_constraintStart_toEndOf="@+id/text_created_time"
+           app:layout_constraintTop_toBottomOf="@id/chuck_image" />
+
+       <TextView
+           android:id="@+id/text_updated_time"
+           android:layout_margin="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="13sp"
+           android:textStyle="bold"
+           android:text="Created At"
+           app:layout_constraintTop_toBottomOf="@+id/text_created_at"
+           app:layout_constraintStart_toStartOf="parent" />
+
+       <TextView
+           android:id="@+id/text_updated_at"
+           android:layout_margin="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="13sp"
+           android:textStyle="bold"
+           android:text="Time here"
+           app:layout_constraintTop_toBottomOf="@id/text_created_at"
+           app:layout_constraintStart_toEndOf="@+id/text_updated_time"
+           app:layout_constraintBottom_toTopOf="@id/text_joke"
+           />
+
+       <TextView
+           android:id="@+id/text_joke"
+           android:layout_margin="8dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="13sp"
+           android:textStyle="bold"
+           android:text=""
+           app:layout_constraintTop_toBottomOf="@id/text_updated_time"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintHorizontal_bias="0"
+           app:layout_constraintBottom_toBottomOf="parent"
+           />
+
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
