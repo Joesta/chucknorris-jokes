@@ -1,10 +1,13 @@
 package io.chucknorris.assessment.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +21,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private SwipeRefreshLayout mSwipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
                             List<Joke> jokes = new ArrayList<>();
                             jokes.add(joke);
                             mAdapter = new JokeAdapter(MainActivity.this, jokes);
-                            recyclerView.setAdapter(mAdapter);
+                            mRecyclerView.setAdapter(mAdapter);
+                            mAdapter.notifyDataSetChanged();
                         }
                     }
 
@@ -57,11 +62,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
+        mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
 
         // initializing layout manager for recycler view
-        layoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        mLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mSwipeContainer = findViewById(R.id.swipeContainer);
+        mSwipeContainer.setOnRefreshListener(this);
+        configureSwipeContainerColors();
     }
+
+    private void configureSwipeContainerColors() {
+        // Configure the refreshing colors
+        mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
+
+
+    @Override
+    public void onRefresh() {
+        getJokes();
+        mSwipeContainer.setRefreshing(false /* stop refreshing*/);
+
+    }
+
 }
