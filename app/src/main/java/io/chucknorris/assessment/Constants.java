@@ -6,4 +6,11 @@ package io.chucknorris.assessment;
  */
 public class Constants {
     public static final String BASE_URL = "https://api.chucknorris.io";
+
+    // fragment tab titles
+    public static class FragmentTabTitle {
+        public static final String RANDOM_JOKE = "Random Joke";
+        public static final String SEARCH_JOKE = "Search Joke";
+    }
+
 }
