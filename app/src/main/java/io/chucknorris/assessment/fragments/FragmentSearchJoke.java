@@ -50,7 +50,6 @@ public class FragmentSearchJoke extends Fragment implements View.OnClickListener
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = getActivity();
-
     }
 
     @Nullable
@@ -114,8 +113,14 @@ public class FragmentSearchJoke extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         final String query = etSearch.getText().toString();
+
+        // search joke
         searchJoke(query);
+
+        // hide soft keyboard
         KeyboardUtil.hideKeyboard(mActivity);
+
+        // clear search query/text after search
         clearSearchText();
     }
 }
