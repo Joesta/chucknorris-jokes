@@ -2,7 +2,7 @@ package io.chucknorris.assessment.adapter;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +22,7 @@ import io.chucknorris.assessment.models.Joke;
 
 /**
  * Project Name - chucknorris-jokes
- * Created on 2021/05/25 at 4:47 PM
+ * Created by Joesta, on 2021/05/25 at 4:47 PM
  */
 public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder> {
 
@@ -53,13 +53,15 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder> {
                 .load(joke.getIconURL())
                 .into(holder.chuckImage);
 
-
-        // Todo - come back and fix me
+        String category = "";
         if (!joke.getCategories().isEmpty()) {
-            joke.getCategories().forEach(
-                    categoryTitle -> Log.d("category", categoryTitle)
-            );
+            for (String currentCategory : joke.getCategories()) {
+                category += currentCategory + "\n";
+            }
         }
+
+        if (!TextUtils.isEmpty(category))
+            holder.text_category.setText(category);
 
         holder.text_createdAt.setText(joke.getCreatedAt().toString());
         holder.text_updatedAt.setText(joke.getUpdatedAt().toString());

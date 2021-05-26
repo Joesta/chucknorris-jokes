@@ -3,8 +3,10 @@ package io.chucknorris.assessment.service;
 import java.util.Map;
 
 import io.chucknorris.assessment.models.Joke;
+import io.chucknorris.assessment.models.JokeResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -18,5 +20,9 @@ public interface JokeService {
 
     @GET("jokes/random")
     Call<Joke> getJokesByCategory(@QueryMap Map<String, String> queryOptions);
+
+    @GET("jokes/search")
+    Call<JokeResponse> searchJoke(@Query("query") String query);
+
 
 }

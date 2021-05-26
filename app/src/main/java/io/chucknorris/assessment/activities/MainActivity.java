@@ -1,92 +1,39 @@
 package io.chucknorris.assessment.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.tabs.TabLayout;
 
 import io.chucknorris.assessment.R;
-import io.chucknorris.assessment.adapter.JokeAdapter;
-import io.chucknorris.assessment.models.Joke;
-import io.chucknorris.assessment.retrofit.RetrofitClient;
-import io.chucknorris.assessment.service.JokeService;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.chucknorris.assessment.adapter.ViewPagerAdapter;
+import io.chucknorris.assessment.fragments.FragmentRandomJoke;
+import io.chucknorris.assessment.fragments.FragmentSearchJoke;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private SwipeRefreshLayout mSwipeContainer;
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initUI();
-        getJokes();
-    }
+        viewPager = findViewById(R.id.view_pager);
 
-    private void getJokes() {
-        RetrofitClient.getInstance()
-                .create(JokeService.class)
-                .getRandomJoke()
-                .enqueue(new Callback<Joke>() {
-                    @Override
-                    public void onResponse(Call<Joke> call, Response<Joke> response) {
-                        if (response.isSuccessful()) {
-                            Joke joke = response.body();
-                            List<Joke> jokes = new ArrayList<>();
-                            jokes.add(joke);
-                            mAdapter = new JokeAdapter(MainActivity.this, jokes);
-                            mRecyclerView.setAdapter(mAdapter);
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    }
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new FragmentRandomJoke(), "Random Joke");
+        adapter.addFragment(new FragmentSearchJoke(), "Search Joke");
 
-                    @Override
-                    public void onFailure(Call<Joke> call, Throwable t) {
-                        t.printStackTrace();
-                    }
-                });
-    }
-
-    private void initUI() {
-        mRecyclerView = findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-
-        // initializing layout manager for recycler view
-        mLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mSwipeContainer = findViewById(R.id.swipeContainer);
-        mSwipeContainer.setOnRefreshListener(this);
-        configureSwipeContainerColors();
-    }
-
-    private void configureSwipeContainerColors() {
-        // Configure the refreshing colors
-        mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-    }
+        viewPager.setAdapter(adapter);
 
 
-    @Override
-    public void onRefresh() {
-        getJokes();
-        mSwipeContainer.setRefreshing(false /* stop refreshing*/);
+        tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
     }
 
