@@ -1,11 +1,14 @@
 package io.chucknorris.assessment.fragments;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +24,7 @@ import io.chucknorris.assessment.models.Joke;
 import io.chucknorris.assessment.models.JokeResponse;
 import io.chucknorris.assessment.retrofit.RetrofitClient;
 import io.chucknorris.assessment.service.JokeService;
+import io.chucknorris.assessment.util.KeyboardUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,12 +33,14 @@ import retrofit2.Response;
  * Project Name - chucknorris-jokes
  * Created by Joesta, on 2021/05/26 at 7:20 PM
  */
-public class FragmentSearchJoke extends Fragment {
+public class FragmentSearchJoke extends Fragment implements View.OnClickListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private Context mContext;
+    private Activity mActivity;
+    private ImageButton btnSearch;
+    private EditText etSearch;
 
     public FragmentSearchJoke() {
     }
@@ -43,7 +49,7 @@ public class FragmentSearchJoke extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
+        mActivity = getActivity();
 
     }
 
@@ -54,15 +60,17 @@ public class FragmentSearchJoke extends Fragment {
         initUI(view);
 
         setHasOptionsMenu(true);
-
-        searchJoke("test");
         return view;
     }
 
     private void initUI(View view) {
         mRecyclerView = view.findViewById(R.id.recyclerView);
+        etSearch = view.findViewById(R.id.et_search);
+        btnSearch = view.findViewById(R.id.btn_search);
+        btnSearch.setOnClickListener(this);
+
         // initializing layout manager for recycler view
-        mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+        mLayoutManager = new LinearLayoutManager(mActivity, RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
@@ -80,9 +88,12 @@ public class FragmentSearchJoke extends Fragment {
 
                                     List<Joke> jokes = jokeResponse.jokes;
 
+                                    if (jokes.isEmpty())
+                                        Toast.makeText(getContext(), "No results found for " + query, Toast.LENGTH_LONG).show();
+
                                     Log.d("searched Jokes", jokes.toString());
 
-                                    mAdapter = new JokeAdapter(mContext, jokes);
+                                    mAdapter = new JokeAdapter(mActivity, jokes);
                                     mRecyclerView.setAdapter(mAdapter);
                                     mAdapter.notifyDataSetChanged();
                                 }
@@ -96,4 +107,15 @@ public class FragmentSearchJoke extends Fragment {
                 );
     }
 
+    private void clearSearchText() {
+        etSearch.setText("");
+    }
+
+    @Override
+    public void onClick(View view) {
+        final String query = etSearch.getText().toString();
+        searchJoke(query);
+        KeyboardUtil.hideKeyboard(mActivity);
+        clearSearchText();
+    }
 }
